@@ -13,7 +13,7 @@ steps:
 
 - script: |
     # Clone the Git repository containing your Terraform configuration files
-    git clone https://your-repo-url.git $(System.DefaultWorkingDirectory)/terraform-config
+    git clone https://github.com/Gopikumar14/terraform-files.git $(System.DefaultWorkingDirectory)/terraform-config
     
     # Navigate to the directory where the files are cloned
     cd $(System.DefaultWorkingDirectory)/terraform-config
@@ -31,4 +31,3 @@ steps:
   inputs:
     pathtoPublish: '$(System.DefaultWorkingDirectory)/terraform-config'
     artifactName: 'drop'
-
