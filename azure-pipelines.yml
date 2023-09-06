@@ -28,5 +28,5 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: 'cd $(terraformConfigDirectory'
+    pathtoPublish: '$(terraformConfigDirectory'
     artifactName: 'drop'
