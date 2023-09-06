@@ -16,17 +16,17 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: |
-    cd $(terraformConfigDirectory
+    cd $(terraformConfigDirectory) # Add a closing parenthesis here
     terraform init
     terraform plan -out=tfplan -input=false
   displayName: 'Terraform Init and Plan'
 
 - script: |
-    cd $(terraformConfigDirectory
+    cd $(terraformConfigDirectory) # Add a closing parenthesis here
     terraform apply -input=false tfplan
   displayName: 'Terraform Apply'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(terraformConfigDirectory'
+    pathtoPublish: '$(terraformConfigDirectory)' # Remove the "cd" command here
     artifactName: 'drop'
