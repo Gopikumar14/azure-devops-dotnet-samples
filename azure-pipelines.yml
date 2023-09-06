@@ -12,13 +12,21 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: |
+    # Authenticate with Azure using environment variables
+    export ARM_CLIENT_ID=$(service_connection_client_id)
+    export ARM_CLIENT_SECRET=$(service_connection_client_secret)
+    export ARM_SUBSCRIPTION_ID=$(service_connection_subscription_id)
+    export ARM_TENANT_ID=$(service_connection_tenant_id)
+    export ARM_USE_MSI=true  # Use Managed Identity, if applicable
+    export ARM_ENVIRONMENT=public  # Azure environment (public, usgovernment, etc.)
+
     # Clone the Git repository containing your Terraform configuration files
     git clone https://github.com/Gopikumar14/terraform-files.git $(System.DefaultWorkingDirectory)/terraform-config
-    
+
     # Navigate to the directory where the files are cloned
     cd $(System.DefaultWorkingDirectory)/terraform-config
-    
-    terraform init -backend-config="access_key=$(azureServiceConnection.servicePrincipalId)"
+
+    terraform init
     terraform plan -out=tfplan -input=false
   displayName: 'Terraform Init and Plan'
 
