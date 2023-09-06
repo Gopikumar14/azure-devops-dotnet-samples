@@ -18,7 +18,7 @@ steps:
     # Navigate to the directory where the files are cloned
     cd $(System.DefaultWorkingDirectory)/terraform-config
     
-    terraform init -backend-config="access_key=$(Testdotnetservice.servicePrincipalId)"
+    terraform init -backend-config="access_key=$(azureServiceConnection.servicePrincipalId)"
     terraform plan -out=tfplan -input=false
   displayName: 'Terraform Init and Plan'
 
