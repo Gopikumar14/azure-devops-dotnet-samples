@@ -6,7 +6,7 @@ pool:
 
 variables:
 - name: terraformConfigDirectory
-  value: 'D:\azdvpsgit\dvpsfordetnetwebapp'
+  value: 'D:\\azdvpsgit\\dvpsfordetnetwebapp' # Use double backslashes in the path
 
 steps:
 - task: UseDotNet@2
@@ -16,17 +16,17 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: |
-    cd $(terraformConfigDirectory) # Add a closing parenthesis here
+    cd $(terraformConfigDirectory)
     terraform init
     terraform plan -out=tfplan -input=false
   displayName: 'Terraform Init and Plan'
 
 - script: |
-    cd $(terraformConfigDirectory) # Add a closing parenthesis here
+    cd $(terraformConfigDirectory)
     terraform apply -input=false tfplan
   displayName: 'Terraform Apply'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(terraformConfigDirectory)' # Remove the "cd" command here
+    pathtoPublish: '$(terraformConfigDirectory)'
     artifactName: 'drop'
