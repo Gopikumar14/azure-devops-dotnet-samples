@@ -12,16 +12,14 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: |
-    # Authenticate with Azure using environment variables
-    export ARM_CLIENT_ID=$(service_connection_client_id)
-    export ARM_CLIENT_SECRET=$(service_connection_client_secret)
-    export ARM_SUBSCRIPTION_ID=$(service_connection_subscription_id)
-    export ARM_TENANT_ID=$(service_connection_tenant_id)
-    export ARM_USE_MSI=true  # Use Managed Identity, if applicable
-    export ARM_ENVIRONMENT=public  # Azure environment (public, usgovernment, etc.)
-
+    # Authenticate with Azure using environment variables or actual values
+    export ARM_CLIENT_ID="Testdotnetservice-client-id"
+    export ARM_CLIENT_SECRET="Testdotnetservice-client-secret"
+    export ARM_SUBSCRIPTION_ID="Testdotnetservice-subscription-id"
+    export ARM_TENANT_ID="Testdotnetservice-tenant-id"
+    
     # Clone the Git repository containing your Terraform configuration files
-    git clone https://github.com/Gopikumar14/terraform-files.git $(System.DefaultWorkingDirectory)/terraform-config
+    git clone https://your-repo-url.git $(System.DefaultWorkingDirectory)/terraform-config
 
     # Navigate to the directory where the files are cloned
     cd $(System.DefaultWorkingDirectory)/terraform-config
@@ -39,3 +37,4 @@ steps:
   inputs:
     pathtoPublish: '$(System.DefaultWorkingDirectory)/terraform-config'
     artifactName: 'drop'
+
