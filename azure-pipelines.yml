@@ -4,6 +4,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+- name: terraformConfigDirectory
+  value: 'D:\azdvpsgit\dvpsfordetnetwebapp'
+
 steps:
 - task: UseDotNet@2
   inputs:
@@ -12,17 +16,17 @@ steps:
     installationPath: $(Agent.ToolsDirectory)/dotnet
 
 - script: |
-    cd $(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp
+    cd $(terraformConfigDirectory
     terraform init
     terraform plan -out=tfplan -input=false
   displayName: 'Terraform Init and Plan'
 
 - script: |
-    cd $(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp
+    cd $(terraformConfigDirectory
     terraform apply -input=false tfplan
   displayName: 'Terraform Apply'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp'
+    pathtoPublish: 'cd $(terraformConfigDirectory'
     artifactName: 'drop'
