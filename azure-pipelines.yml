@@ -1,32 +1,28 @@
-pool:
-  vmImage: vs2017-win2016
+trigger:
+- main
 
-variables:
-  solution: './ClientLibrary/Samples/ClientSamples.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+pool:
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
   inputs:
-    version: 6.x
-    performMultiLevelLookup: true
-    includePreviewVersions: true # Required for preview versions
-- task: NuGetToolInstaller@0
+    packageType: 'sdk'
+    version: '3.x'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: NuGetCommand@2
+- script: |
+    cd $(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp
+    terraform init
+    terraform plan -out=tfplan -input=false
+  displayName: 'Terraform Init and Plan'
+
+- script: |
+    cd $(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp
+    terraform apply -input=false tfplan
+  displayName: 'Terraform Apply'
+
+- task: PublishBuildArtifacts@1
   inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
+    pathtoPublish: '$(System.DefaultWorkingDirectory)/D:\azdvpsgit\dvpsfordetnetwebapp'
+    artifactName: 'drop'
